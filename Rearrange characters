@@ -1,0 +1,79 @@
+/*https://practice.geeksforgeeks.org/problems/rearrange-characters/0
+Given a string S with repeated characters (only lowercase). The task is to rearrange characters in a string such that no two adjacent characters are same.
+
+Note : It may be assumed that the string has only lowercase English alphabets.
+
+Input:
+The first line of input contains an integer T denoting the number of test cases. Then T test cases follow. Each test case contains a single line containing a string of lowercase english alphabets.
+
+Output:
+For each test case in a new line print "1" (without quotes) if the generated string doesn't contains any same adjacent characters, else if no such string is possible to be made print "0" (without quotes).
+
+Constraints:
+1 <= T <= 100
+1 <= length of string <= 104
+
+Example:
+Input:
+3
+geeksforgeeks
+bbbabaaacd
+bbbbb
+
+Output:
+1
+1
+0
+
+Explanation:
+Testcase 1: All the repeated characters of the given string can be rearranged so that no adjacent characters in the string is equal.
+Testcase 3: Repeated characters in the string cannot be rearranged such that there should not be any adjacent repeated character.*/
+#include<iostream>
+#include<bits/stdc++.h>
+using namespace std;
+int main()
+ {
+	//code
+	int i,j;
+	
+	int t;
+	cin>>t;
+	for(i=0;i<t;i++)
+	{
+	    string str;
+	    cin>>str;
+	    
+	    map<char,int>mapy;
+	    priority_queue<pair<int,char>>pq;
+	    for(j=0;j<str.size();j++)
+	    {
+	        mapy[str[j]]=mapy[str[j]]+1;
+	    }
+	    for(auto f:mapy)
+	    {
+	        pq.push({f.second,f.first});
+	    }
+	    
+	    string output="";
+	    pair<int,char>prev;
+	    while(pq.size()!=0)
+	    {
+	        pair<int,char> top=pq.top();
+	        pq.pop();
+	        
+	        
+	        output=output+top.second;
+	        if(prev.first>0)
+	        {
+	            pq.push(prev);
+	        }
+	        prev={top.first-1,top.second};
+	    }
+	    if(str.size()!=output.size())
+	    {
+	        cout<<"0\n";
+	    }
+	    else cout<<"1\n";
+	}
+	return 0;
+}
