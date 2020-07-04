@@ -1,0 +1,111 @@
+/*https://leetcode.com/problems/find-median-from-data-stream/
+Median is the middle value in an ordered integer list. If the size of the list is even, there is no middle value. So the median is the mean of the two middle value.
+
+For example,
+[2,3,4], the median is 3
+
+[2,3], the median is (2 + 3) / 2 = 2.5
+
+Design a data structure that supports the following two operations:
+
+void addNum(int num) - Add a integer number from the data stream to the data structure.
+double findMedian() - Return the median of all elements so far.
+ 
+
+Example:
+
+addNum(1)
+addNum(2)
+findMedian() -> 1.5
+addNum(3) 
+findMedian() -> 2
+ 
+
+Follow up:
+
+If all integer numbers from the stream are between 0 and 100, how would you optimize it?
+If 99% of all integer numbers from the stream are between 0 and 100, how would you optimize it?*/
+
+class MedianFinder {
+public:
+  priority_queue<double>max_heap;//left
+      priority_queue<double,vector<double>,greater<double>>min_heap;//right
+    /** initialize your data structure here. */
+    MedianFinder() {
+      
+      
+    }
+    
+    double median=0;
+    void addNum(int n) {
+      
+      double num=(double)n;
+      if(max_heap.size()==0)
+      {
+        max_heap.push(num);
+        median=num;
+        return;
+      }
+      
+      if(max_heap.size()>min_heap.size())
+      {
+        if(num>median)
+        {
+          min_heap.push(num);
+        }
+        else
+        {
+          min_heap.push(max_heap.top());
+          max_heap.pop();
+          max_heap.push(num);
+        }
+      }
+      else if(max_heap.size()<min_heap.size())
+      {
+        if(num>median)
+        {
+          max_heap.push(min_heap.top());
+          min_heap.pop();
+          min_heap.push(num);
+        }
+        else
+        {
+          max_heap.push(num);
+        }
+      }
+      else
+      {
+        if(num<median)
+        {
+          max_heap.push(num);
+        }
+        else
+        {
+          min_heap.push(num);
+        }
+      }
+        
+    }
+    
+    double findMedian() {
+        if(max_heap.size()==min_heap.size())
+        {
+          return median=(double)((max_heap.top()+min_heap.top())*0.5);
+        }
+        else if(max_heap.size()>min_heap.size())
+        {
+          return median=max_heap.top();
+        }
+        else
+        {
+          return median=min_heap.top();
+        }
+    }
+};
+
+/**
+ * Your MedianFinder object will be instantiated and called as such:
+ * MedianFinder* obj = new MedianFinder();
+ * obj->addNum(num);
+ * double param_2 = obj->findMedian();
+ */
