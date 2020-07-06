@@ -1,0 +1,70 @@
+/*https://leetcode.com/problems/sort-characters-by-frequency/
+
+Given a string, sort it in decreasing order based on the frequency of characters.
+
+Example 1:
+
+Input:
+"tree"
+
+Output:
+"eert"
+
+Explanation:
+'e' appears twice while 'r' and 't' both appear once.
+So 'e' must appear before both 'r' and 't'. Therefore "eetr" is also a valid answer.
+Example 2:
+
+Input:
+"cccaaa"
+
+Output:
+"cccaaa"
+
+Explanation:
+Both 'c' and 'a' appear three times, so "aaaccc" is also a valid answer.
+Note that "cacaca" is incorrect, as the same characters must be together.
+Example 3:
+
+Input:
+"Aabb"
+
+Output:
+"bbAa"
+
+Explanation:
+"bbaA" is also a valid answer, but "Aabb" is incorrect.
+Note that 'A' and 'a' are treated as two different characters.*/
+
+
+class Solution {
+public:
+    static bool cmp(pair<char, int>& a, pair<char, int>& b) { 
+        return a.second > b.second; 
+    }
+    string frequencySort(string s) {
+        map<char, int> mp;
+        vector<pair<char, int> > A; 
+        for(int i=0; i<s.length(); i++) {
+            if(mp.find(s[i]) == mp.end()) {
+                mp.insert({s[i], 1});
+            } else {
+                mp[s[i]]++;
+            }
+        }
+        
+        for(auto& it : mp) {
+            A.push_back(it);
+        }
+        
+        sort(A.begin(), A.end(), cmp);
+        
+        string res = "";
+        for(auto& it : A) {
+            for(int i=0; i<it.second; i++) {
+                res += it.first;
+            }
+        }
+        return res;
+    }
+};
